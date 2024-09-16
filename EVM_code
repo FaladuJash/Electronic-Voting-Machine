@@ -1,0 +1,206 @@
+#include <LiquidCrystal.h>
+//We have used 11-6 pins for LcD display
+//12-13 pins are used for LEDS
+//4 and 2 are used for Buzzer Output
+
+LiquidCrystal lcd(11,10,9,8,7,6);
+#define sw1 A0
+#define sw2 A1
+#define sw3 A2
+#define sw4 A3
+#define sw5 A4
+
+int Vote1=0;
+int Vote2=0;
+int Vote3=0;
+int Vote4=0;
+
+void setup() {
+  pinMode(sw1, INPUT);
+  pinMode(sw2, INPUT);
+  pinMode(sw3, INPUT);
+  pinMode(sw4, INPUT);
+  pinMode(sw5, INPUT);
+
+  pinMode(13, OUTPUT); // Red LED
+  pinMode(12, OUTPUT); // Green LED
+  
+  pinMode(2, OUTPUT); // Buzzer 1 
+
+  lcd.begin(16,2);
+  lcd.setCursor(0,0);
+  lcd.print("Electronic");
+  lcd.setCursor(1,1);
+  lcd.print("Voting Machine");
+  delay(8000);
+
+  digitalWrite(sw1, HIGH);
+  digitalWrite(sw2, HIGH);
+  digitalWrite(sw3, HIGH);
+  digitalWrite(sw4, HIGH);
+  digitalWrite(sw5, HIGH);
+
+  lcd.clear();
+  delay(800);
+  lcd.setCursor(0,1);
+  lcd.print("Vote by pressing Button with Party Logo.");
+  delay(500);
+  for (int i=0; i<24;i++){
+    lcd.scrollDisplayLeft();
+    delay(200);
+  }
+
+  lcd.clear();
+
+
+  lcd.setCursor(0,0);
+  lcd.print("Please cast your");
+  lcd.setCursor(1,1);
+  lcd.print("vote only once");
+  delay(2000);
+
+  lcd.clear();
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  lcd.setCursor(0,0);
+  lcd.print("Please Cast Your");
+  lcd.setCursor(5,1);
+  lcd.print("Vote");
+  tone(2, 150, 150);
+
+  if(digitalRead(sw1)==1){ 
+    tone(2, 450, 300);
+    Vote1++;
+    lcd.clear();
+    digitalWrite(12,HIGH);
+    delay(500);
+    lcd.setCursor(3,0);
+    lcd.print("Vote Casted,");
+    lcd.setCursor(3,1);
+    lcd.print("Thank You.");
+    noTone(2);
+    delay(7000);
+    digitalWrite(12,LOW);
+    lcd.clear();
+  }
+  
+  if(digitalRead(sw2)==1){ 
+    tone(2, 450, 300);
+    Vote2++;
+    lcd.clear();
+    digitalWrite(12,HIGH);
+    delay(500);
+    lcd.setCursor(3,0);
+    lcd.print("Vote Casted,");
+    lcd.setCursor(3,1);
+    lcd.print("Thank You.");
+    noTone(2);
+    delay(7000);
+    digitalWrite(12,LOW);
+    lcd.clear();
+  }
+  
+  if(digitalRead(sw3)==1){ 
+    tone(2, 450, 300);
+    Vote3++;
+    lcd.clear();
+    digitalWrite(12,HIGH);
+    delay(500);
+    lcd.setCursor(3,0);
+    lcd.print("Vote Casted,");
+    lcd.setCursor(3,1);
+    lcd.print("Thank You.");
+    noTone(2);
+    delay(7000);
+    digitalWrite(12,LOW);
+    lcd.clear();
+  }
+ 
+  if(digitalRead(sw4)==1){ 
+    tone(2, 450, 300);
+    Vote4++;
+    lcd.clear();
+    digitalWrite(12,HIGH);
+    delay(500);
+    lcd.setCursor(3,0);
+    lcd.print("Vote Casted,");
+    lcd.setCursor(3,1);
+    lcd.print("Thank You.");
+    noTone(2);
+    delay(7000);
+    digitalWrite(12,LOW);
+    lcd.clear();
+  }
+  if(digitalRead(sw5)==0){
+  digitalWrite(13,HIGH);
+  int Vote=Vote1+Vote2+Vote3+Vote4;
+  if(Vote){
+    if((Vote1 > Vote2 && Vote1 > Vote3 && Vote1 > Vote4)){
+      lcd.clear();
+      lcd.setCursor(4,0);
+      lcd.print("BJP Wins");
+      lcd.setCursor(0,1);
+      lcd.print("Votes :");
+      lcd.setCursor(9,1);
+      lcd.print(Vote1);
+      delay(5000);
+      lcd.clear();
+      }
+    else if((Vote2 > Vote1 && Vote2 > Vote3 && Vote2 > Vote4)){
+      lcd.clear();
+      lcd.setCursor(4,0);
+      lcd.print("INC Wins");
+      lcd.setCursor(0,1);
+      lcd.print("Votes :");
+      lcd.setCursor(9,1);
+      lcd.print(Vote2);
+      delay(5000);
+      lcd.clear();
+      }
+    else if((Vote3 > Vote1 && Vote3 > Vote2 && Vote3 > Vote4)){
+      lcd.clear();
+      lcd.print("AAP Wins");
+      lcd.setCursor(0,1);
+      lcd.print("Votes :");
+      lcd.setCursor(9,1);
+      lcd.print(Vote3);
+      delay(5000);
+      lcd.clear();
+      }
+    else if(Vote4 > Vote1 && Vote4 > Vote2 && Vote4 > Vote3){
+      lcd.clear();
+      lcd.setCursor(4,0);
+      lcd.print("NOTA Wins");
+      lcd.setCursor(0,1);
+      lcd.print("Votes :");
+      lcd.setCursor(9,1);
+      lcd.print(Vote4);
+      delay(5000);
+      lcd.clear();
+      }
+    else{
+      lcd.clear();
+      lcd.print(" Tie Up Or ");
+      lcd.setCursor(3,1);
+      lcd.print(" No Result ");
+      delay(5000);
+      lcd.clear();
+      }
+    }
+  else{
+    lcd.clear();
+    lcd.setCursor(1,0);
+    lcd.print("No Voting Has");
+    lcd.setCursor(4,1);
+    lcd.print("Occured");
+    delay(5000);
+    lcd.clear();
+    }
+  Vote1=0;Vote2=0;Vote3=0;Vote4=0,Vote=0;
+  lcd.clear();
+  digitalWrite(12,LOW);
+  digitalWrite(13,LOW);
+  }
+}
